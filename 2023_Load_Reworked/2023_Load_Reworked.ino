@@ -133,7 +133,7 @@ void loop () {
             state = Startup;
             break;
         case Optimize:
-            if (GetRpmBuffered(rpm_filter) > 3500.0) {
+            if (GetRpmBuffered(rpm_filter) > 3000.0) {
                 state = Regulate;
                 break;
             }

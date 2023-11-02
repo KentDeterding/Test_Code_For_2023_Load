@@ -12,7 +12,7 @@
             ],
             "intelliSenseMode": "gcc-x64",
             "includePath": [
-                "C:\\Users\\Kent4\\AppData\\Local\\Temp\\arduino\\sketches\\60B3CB57DFED2E3C261CD82DA805A982\\pch",
+                "C:\\Users\\Kent4\\AppData\\Local\\Temp\\arduino\\sketches\\4FA2CE939CE52E38F9FD798A4CF522B8\\pch",
                 "C:\\Users\\Kent4\\AppData\\Local\\Arduino15\\packages\\teensy\\hardware\\avr\\1.58.1\\cores\\teensy4",
                 "C:\\Users\\Kent4\\AppData\\Local\\Arduino15\\packages\\teensy\\hardware\\avr\\1.58.1\\libraries\\Wire",
                 "C:\\Users\\Kent4\\Documents\\Arduino\\libraries\\Adafruit_MCP4725",
@@ -29,7 +29,7 @@
                 "c:\\users\\kent4\\appdata\\local\\arduino15\\packages\\teensy\\tools\\teensy-compile\\11.3.1\\arm\\arm-none-eabi\\include"
             ],
             "forcedInclude": [
-                "C:\\Users\\Kent4\\AppData\\Local\\Temp\\arduino\\sketches\\60B3CB57DFED2E3C261CD82DA805A982\\pch\\Arduino.h"
+                "C:\\Users\\Kent4\\AppData\\Local\\Temp\\arduino\\sketches\\4FA2CE939CE52E38F9FD798A4CF522B8\\pch\\Arduino.h"
             ],
             "cStandard": "c11",
             "cppStandard": "c++14",
