@@ -26,7 +26,7 @@ STATES state = Startup;
 
 // Timers
 unsigned int timer_coms = 0;
-unsigned int timer_b = 0;
+unsigned int timer_optimize = 0;
 
 // RPM
 struct Filter* rpm_filter = CreateFilter(10, 14);
@@ -35,10 +35,18 @@ struct Filter* rpm_filter = CreateFilter(10, 14);
 PA12 myServo(&Serial1, 16, 1);
 
 // Theta Constants
-int theta_min = 0;
-int theta_max = 4095;
-int theta_break = 100;
-int theta_cut_in = 2500; // TODO: tune this value
+const int theta_min = 0;
+const int theta_max = 4095;
+const int theta_break = 100;
+const int theta_cut_in = 2500; // TODO: tune this value
+
+// Optimization Variables
+int theta_current = 0;
+int theta_previous = 0;
+double rpm_last = 0;
+int theta_step_size = 100;
+const float theta_multiplier_flip = 0.25;
+const float theat_multiplier_else = 1.5;
 
 
 void setup () {
@@ -94,11 +102,11 @@ void setup () {
     // Init Timers
     unsigned int time = millis();
     timer_coms = time;
-    timer_b = time;
+    timer_optimize = time;
 }
 
 void loop () {
-    // check E-Stop
+    // Check E-Stop
     if (digitalRead(EStop_Pin) == HIGH) {
         state = EStop;
     }
@@ -116,6 +124,7 @@ void loop () {
         case Startup:
             if (GetRpmBuffered(rpm_filter) > 500.0) {
                 state = Optimize;
+                theta_step_size = 100;
             }
             break;
         case EStop:
@@ -137,9 +146,25 @@ void loop () {
                 state = Regulate;
                 break;
             }
-            // TODO: set optimal pitch
 
+            if (GetRpmBuffered(rpm_filter) < 400.0) {
+                state = Startup;
+                break;
+            }
 
+            // Set optimal pitch
+            if (timer_optimize - millis() > 250) {
+                timer_optimize = millis();
+
+                double rpm_cur = GetRpmBuffered(rpm_filter);
+                if (rpm_last > rpm_cur) {
+                    // if rpm is decreasing, flip direction of change
+                    theta_step_size *= (-1 * theta_multiplier_flip);
+                } else {
+                    theta_step_size *= theat_multiplier_else;
+                }
+                rpm_last = rpm_cur;
+            }
 
             break;
         case Regulate:
@@ -152,6 +177,5 @@ void loop () {
 }
 
 void RPM_Interrupt () {
-    int time = (int)micros();
-    Insert(rpm_filter, time);
+    Insert(rpm_filter, (int)micros());
 }
