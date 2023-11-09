@@ -34,6 +34,12 @@ struct Filter* rpm_filter = CreateFilter(10, 14);
 // Linear Actuator
 PA12 myServo(&Serial1, 16, 1);
 
+// INA260
+Adafruit_INA260 ina260 = Adafruit_INA260();
+
+// DAC
+Adafruit_MCP4725 dac;
+
 // Theta Constants
 const int theta_min = 0;
 const int theta_max = 4095;
@@ -46,7 +52,7 @@ int theta_previous = 0;
 double rpm_last = 0;
 int theta_step_size = 100;
 const float theta_multiplier_flip = 0.25;
-const float theat_multiplier_else = 1.5;
+const float theta_multiplier_else = 1.5;
 
 
 void setup () {
@@ -57,12 +63,10 @@ void setup () {
     Serial.println("Starting...");
 
     // Init INA260
-    Adafruit_INA260 ina260 = Adafruit_INA260();
     ina260.begin();
     Serial.println("INA260 ready");
 
     // Init DAC
-    Adafruit_MCP4725 dac;
     dac.begin(0x66);
     Serial.println("DAC ready");
 
@@ -99,6 +103,10 @@ void setup () {
     // Start RPM Tracking
     attachInterrupt(digitalPinToInterrupt(RPM_Pin), RPM_Interrupt, RISING);
 
+    // Turn PCC off
+    digitalWrite(PCC_Relay_Pin, LOW);
+    Serial.println("PCC off");
+
     // Init Timers
     unsigned int time = millis();
     timer_coms = time;
@@ -112,11 +120,58 @@ void loop () {
     }
 
     // TODO: check PCC disconnect
+    if (Serial.available() > 0) {
+        uint8_t cmd = Serial.read();
+
+        switch (cmd)
+        {
+        case 's':
+            //state_Machine_Enable = !state_Machine_Enable;
+            break;
+
+        case 't':
+            //theta = Serial.parseFloat();
+            break;
+
+        case 'o':
+            //load_Optimize_Enable = !load_Optimize_Enable;
+            break;
+
+        case 'p':
+            if (digitalRead(PCC_Relay_Pin) == HIGH) {
+                digitalWrite(PCC_Relay_Pin, LOW);
+                Serial.println("PCC off");
+            } else {
+                digitalWrite(PCC_Relay_Pin, HIGH);
+                Serial.println("PCC on");
+            }
+            //PCC_Relay = !PCC_Relay;
+            //digitalWrite(24, PCC_Relay);
+            break;
+
+        case 'v':
+            int DAC_voltage = Serial.parseInt();
+            Serial.print("Setting DAC to: ");
+            Serial.println(DAC_voltage);
+            dac.setVoltage(DAC_voltage, false);
+            break;
+
+        default:
+            Serial.println("Command not recognized");
+            break;
+        }
+    }
 
     // Read PC coms every 250ms
-    if (millis() - timer_coms > 250) {
+    if (millis() - timer_coms > 500) {
         timer_coms = millis();
         // TODO: PC coms
+        Serial.print("State: ");
+        Serial.println(state);
+        Serial.print("RPM: ");
+        Serial.println(GetRpmBuffered(rpm_filter));
+        Serial.print("Load Power: ");
+        Serial.println(ina260.readPower());
     }
 
     // State Machine
@@ -125,6 +180,7 @@ void loop () {
             if (GetRpmBuffered(rpm_filter) > 500.0) {
                 state = Optimize;
                 theta_step_size = 100;
+                dac.setVoltage(16, false);
             }
             break;
         case EStop:
@@ -161,14 +217,20 @@ void loop () {
                     // if rpm is decreasing, flip direction of change
                     theta_step_size *= (-1 * theta_multiplier_flip);
                 } else {
-                    theta_step_size *= theat_multiplier_else;
+                    theta_step_size *= theta_multiplier_else;
                 }
+
                 rpm_last = rpm_cur;
+
+                theta_current = myServo.presentPosition(ID_NUM);
+                myServo.goalPosition(ID_NUM, theta_current + theta_step_size);
             }
 
             break;
         case Regulate:
             // TODO: regulate power/rpm with pitch
+            
+
             break;
         default:
             Serial.println("Error: Invalid State");
