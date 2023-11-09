@@ -43,14 +43,14 @@ Adafruit_MCP4725 dac;
 // Theta Constants
 const int theta_min = 0;
 const int theta_max = 4095;
-const int theta_break = 100;
-const int theta_cut_in = 2500; // TODO: tune this value
+const int theta_break = 3186;
+const int theta_cut_in = 992;
 
 // Optimization Variables
 int theta_current = 0;
 int theta_previous = 0;
 double rpm_last = 0;
-int theta_step_size = 100;
+int theta_step_size = 50;
 const float theta_multiplier_flip = 0.25;
 const float theta_multiplier_else = 1.5;
 
@@ -175,7 +175,7 @@ void loop () {
         case Startup:
             if (GetRpmBuffered(rpm_filter) > 500.0) {
                 state = Optimize;
-                theta_step_size = 100;
+                theta_step_size = 50;
                 dac.setVoltage(16, false);
             }
             break;
