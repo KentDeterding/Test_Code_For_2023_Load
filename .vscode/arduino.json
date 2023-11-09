@@ -1,5 +1,6 @@
 {
     "configuration": "usb=serial,speed=600,opt=o2std,keys=en-us",
     "board": "teensy:avr:teensy41",
-    "sketch": "2023_Load_Reworked\\2023_Load_Reworked.ino"
+    "sketch": "2023_Load_Reworked\\2023_Load_Reworked.ino",
+    "port": "COM3"
 }

@@ -12,13 +12,13 @@
             ],
             "intelliSenseMode": "gcc-x64",
             "includePath": [
-                "C:\\Users\\Kent4\\AppData\\Local\\Temp\\arduino\\sketches\\4FA2CE939CE52E38F9FD798A4CF522B8\\pch",
+                "C:\\Users\\Kent4\\AppData\\Local\\Temp\\arduino\\sketches\\28CA91602706668AA5518D4BC8C74CCE\\pch",
                 "C:\\Users\\Kent4\\AppData\\Local\\Arduino15\\packages\\teensy\\hardware\\avr\\1.58.1\\cores\\teensy4",
                 "C:\\Users\\Kent4\\AppData\\Local\\Arduino15\\packages\\teensy\\hardware\\avr\\1.58.1\\libraries\\Wire",
                 "C:\\Users\\Kent4\\Documents\\Arduino\\libraries\\Adafruit_MCP4725",
+                "C:\\Users\\Kent4\\Documents\\Arduino\\libraries\\Adafruit_INA260_Library",
                 "C:\\Users\\Kent4\\Documents\\Arduino\\libraries\\Adafruit_BusIO",
                 "C:\\Users\\Kent4\\AppData\\Local\\Arduino15\\packages\\teensy\\hardware\\avr\\1.58.1\\libraries\\SPI",
-                "C:\\Users\\Kent4\\Documents\\Arduino\\libraries\\Adafruit_INA260_Library",
                 "C:\\Users\\Kent4\\Documents\\Arduino\\libraries\\PA12_Arduino",
                 "C:\\Users\\Kent4\\AppData\\Local\\Arduino15\\packages\\teensy\\hardware\\avr\\1.58.1\\libraries\\SoftwareSerial",
                 "c:\\users\\kent4\\appdata\\local\\arduino15\\packages\\teensy\\tools\\teensy-compile\\11.3.1\\arm\\arm-none-eabi\\include\\c++\\11.3.1",
@@ -29,7 +29,7 @@
                 "c:\\users\\kent4\\appdata\\local\\arduino15\\packages\\teensy\\tools\\teensy-compile\\11.3.1\\arm\\arm-none-eabi\\include"
             ],
             "forcedInclude": [
-                "C:\\Users\\Kent4\\AppData\\Local\\Temp\\arduino\\sketches\\4FA2CE939CE52E38F9FD798A4CF522B8\\pch\\Arduino.h"
+                "C:\\Users\\Kent4\\AppData\\Local\\Temp\\arduino\\sketches\\28CA91602706668AA5518D4BC8C74CCE\\pch\\Arduino.h"
             ],
             "cStandard": "c11",
             "cppStandard": "c++14",

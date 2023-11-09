@@ -125,40 +125,36 @@ void loop () {
 
         switch (cmd)
         {
-        case 's':
-            //state_Machine_Enable = !state_Machine_Enable;
-            break;
+            case 't':
+                //theta = Serial.parseFloat();
+                break;
 
-        case 't':
-            //theta = Serial.parseFloat();
-            break;
+            case 'o':
+                //load_Optimize_Enable = !load_Optimize_Enable;
+                break;
 
-        case 'o':
-            //load_Optimize_Enable = !load_Optimize_Enable;
-            break;
+            case 'p':
+                if (digitalRead(PCC_Relay_Pin) == HIGH) {
+                    digitalWrite(PCC_Relay_Pin, LOW);
+                    Serial.println("PCC off");
+                } else {
+                    digitalWrite(PCC_Relay_Pin, HIGH);
+                    Serial.println("PCC on");
+                }
+                //PCC_Relay = !PCC_Relay;
+                //digitalWrite(24, PCC_Relay);
+                break;
 
-        case 'p':
-            if (digitalRead(PCC_Relay_Pin) == HIGH) {
-                digitalWrite(PCC_Relay_Pin, LOW);
-                Serial.println("PCC off");
-            } else {
-                digitalWrite(PCC_Relay_Pin, HIGH);
-                Serial.println("PCC on");
-            }
-            //PCC_Relay = !PCC_Relay;
-            //digitalWrite(24, PCC_Relay);
-            break;
+            case 'v':
+                int temp_DAC_voltage = Serial.parseInt();
+                Serial.print("Setting DAC to: ");
+                Serial.println(temp_DAC_voltage);
+                dac.setVoltage(temp_DAC_voltage, false);
+                break;
 
-        case 'v':
-            int DAC_voltage = Serial.parseInt();
-            Serial.print("Setting DAC to: ");
-            Serial.println(DAC_voltage);
-            dac.setVoltage(DAC_voltage, false);
-            break;
-
-        default:
-            Serial.println("Command not recognized");
-            break;
+            default:
+                Serial.println("Command not recognized");
+                break;
         }
     }
 
@@ -229,7 +225,7 @@ void loop () {
             break;
         case Regulate:
             // TODO: regulate power/rpm with pitch
-            
+            myServo.goalPosition(ID_NUM, 1000);
 
             break;
         default:
